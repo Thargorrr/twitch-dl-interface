@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Configure Channel</title>
+</head>
+<body>
+    <h1>Configure Channel: {{ channel.name }}</h1>
+    <form method="post">
+        <label for="recording">Recording Stream:</label>
+        <input type="checkbox" name="recording" {% if channel.recording %}checked{% endif %}><br>
+        <label for="quality">Recording Quality:</label>
+        <select name="quality">
+            <option value="highest" {% if channel.quality == 'highest' %}selected{% endif %}>Highest</option>
+            <option value="1080p" {% if channel.quality == '1080p' %}selected{% endif %}>1080p</option>
+            <option value="720p" {% if channel.quality == '720p' %}selected{% endif %}>720p</option>
+            <option value="audio only" {% if channel.quality == 'audio only' %}selected{% endif %}>Audio Only</option>
+        </select><br>
+        <label for="save_duration">Recording Save Duration:</label>
+        <select name="save_duration">
+            <option value="forever" {% if channel.save_duration == 'forever' %}selected{% endif %}>Forever</option>
+            <option value="week" {% if channel.save_duration == 'week' %}selected{% endif %}>Week</option>
+            <option value="day" {% if channel.save_duration == 'day' %}selected{% endif %}>Day</option>
+            <option value="custom" {% if channel.save_duration == 'custom' %}selected{% endif %}>Custom</option>
+        </select><br>
+        <label for="record_length">Record Length Limit (Hours):</label>
+        <input type="number" name="record_length" value="{{ channel.record_length }}"><br>
+        <button type="submit">Save Configuration</button>
+    </form>
+</body>
+</html>

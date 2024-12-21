@@ -8,5 +8,17 @@
 </head>
 <body>
     <h1>Favorites Page</h1>
+    <div id="favorites-list">
+        <!-- Add favorite channels here -->
+        {% for channel in channels %}
+            <div class="channel">
+                <img src="{{ channel.image_url }}" alt="{{ channel.name }}">
+                <h2>{{ channel.name }}</h2>
+                <p>{{ channel.info }}</p>
+                <a href="/channel/{{ channel.id }}/config">Configure</a>
+                <button onclick="unfavorite('{{ channel.id }}')">Unfavorite</button>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
