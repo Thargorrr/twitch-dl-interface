@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect
-from backend.db.operations import get_favorited_channels, get_channel, update_channel_config, search_channels
+from flask import Flask, render_template, request, redirect, url_for
+from backend.db.operations import *
+from backend.twitch_api import get_twitch_access_token, search_twitch_channels
+# get_favorited_channels, get_channel, update_channel_config, search_channels
 
 app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/css')
 
@@ -11,14 +13,20 @@ def main():
 def search():
     if request.method == 'POST':
         query = request.form['query']
-        search_results = search_channels(query)
-        return render_template('search.html', results=search_results)
-    return render_template('search.html', results=[])
+        access_token = get_twitch_access_token()
+        channels = search_twitch_channels(query, access_token)
+        return render_template('search.html', channels=channels)
+    return render_template('search.html', channels=[])
 
 
-@app.route('/favorites')
+@app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
-    # Fetch favorited channels from the database
+    if request.method == 'POST':
+        channel_id = request.form['channel_id']
+        channel_name = request.form['channel_name']
+        channel_image_url = request.form['channel_image_url']
+        add_favorited_channel(channel_id, channel_name, channel_image_url)
+        return redirect(url_for('favorites'))
     channels = get_favorited_channels()
     return render_template('favorites.html', channels=channels)
 

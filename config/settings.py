@@ -2,6 +2,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, 'database.db')
 
+# Add your Twitch API credentials here
+TWITCH_CLIENT_ID = 'your_client_id'
+TWITCH_CLIENT_SECRET = 'your_client_secret'
+
 import sqlite3
 from config.settings import DATABASE
 
