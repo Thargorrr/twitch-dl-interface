@@ -2,7 +2,6 @@ import os
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 import sqlite3
-from config.settings import DATABASE
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, 'database.db')
@@ -12,6 +11,8 @@ def initialize():
     if not os.path.exists(ENV_PATH):
         with open(ENV_PATH, 'w') as f:
             f.write('')  # Create an empty .env file
+
+initialize()
 
 # Load environment variables from .env file
 load_dotenv(ENV_PATH)
@@ -32,6 +33,11 @@ def encrypt_data(data):
 def decrypt_data(data):
     """Decrypt the data."""
     return cipher.decrypt(data.encode()).decode()
+
+def get_database_path():
+    # Import DATABASE here to avoid circular import
+    from config.settings import DATABASE
+    return DATABASE
 
 def init_db():
     with sqlite3.connect(DATABASE) as conn:

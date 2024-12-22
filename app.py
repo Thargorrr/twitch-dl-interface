@@ -3,12 +3,12 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from dotenv import set_key, load_dotenv
 from backend.db.operations import *
 from backend.twitch_api import get_twitch_access_token, search_twitch_channels
-from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize
+from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize, get_database_path
 
 initialize()
 
 app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/css')
-load_dotenv(ENV_PATH)
+load_dotenv(get_database_path())
 app.secret_key = os.getenv('SECRET_KEY')
 
 @app.route('/')
