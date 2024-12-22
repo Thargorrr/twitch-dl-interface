@@ -1,7 +1,7 @@
 # backend/twitch_api.py
 import os
 import requests
-from config.settings import TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, decrypt_data
+from config.settings import decrypt_data
 
 def get_twitch_access_token():
     client_id = decrypt_data(os.getenv('TWITCH_CLIENT_ID'))
