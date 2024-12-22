@@ -20,7 +20,7 @@
                 <li class="channel-info">
                     <div class="channel-details">
                         <a href="https://www.twitch.tv/{{ channel.display_name }}" target="_blank" class="channel-link">
-                            <img src="{{ channel.profile_image_url }}" alt="{{ channel.display_name }}">
+                            <img src="{{ channel.profile_image_url }}" alt="{{ channel.display_name }}" class="channel-image">
                             <span>{{ channel.display_name }}</span>
                             <span class="live-indicator {% if channel.is_live %}live{% else %}offline{% endif %}"></span>
                         </a>

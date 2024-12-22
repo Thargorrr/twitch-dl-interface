@@ -71,7 +71,8 @@ nav ul li a:hover {
 .live-indicator.offline {
     background-color: #a9a9a9; /* Gray for offline indicator */
 }
-.stream-thumbnail {
+/* Stream Thumbnail */
+.channel-info .stream-thumbnail {  /* More specific selector */
     width: 100%;
     height: auto;
     max-width: 320px;
