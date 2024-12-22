@@ -8,7 +8,8 @@ from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize, ge
 initialize()
 
 app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/css')
-load_dotenv(get_database_path())
+load_dotenv()
+print(f"SECRET_KEY from app.py: {os.getenv('SECRET_KEY')}")
 app.secret_key = os.getenv('SECRET_KEY')
 
 @app.route('/')

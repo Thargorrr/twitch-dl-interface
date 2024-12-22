@@ -16,6 +16,7 @@ initialize()
 
 # Load environment variables from .env file
 load_dotenv(ENV_PATH)
+print(f"SECRET_KEY from settings.py: {os.getenv('SECRET_KEY')}")
 
 # Generate SECRET_KEY if it doesn't exist
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -50,8 +51,6 @@ def init_db():
                           save_duration TEXT NOT NULL,
                           record_length INTEGER
                           )''')
-
-        cursor.execute('''INSERT OR IGNORE INTO settings (id) VALUES (1)''')
         conn.commit()
 
 if __name__ == '__main__':
