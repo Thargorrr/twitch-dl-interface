@@ -8,6 +8,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, 'database.db')
 ENV_PATH = os.path.join(BASE_DIR, '..', '.env')
 
+def initialize():
+    if not os.path.exists(ENV_PATH):
+        with open(ENV_PATH, 'w') as f:
+            f.write('')  # Create an empty .env file
+
 # Load environment variables from .env file
 load_dotenv(ENV_PATH)
 
