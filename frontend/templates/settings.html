@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <h1>Twitch Credentials</h1>
@@ -30,14 +26,18 @@
     {% endif %}
 
     <!-- Input fields to enter new credentials if needed -->
-    <form method="POST" action="{{ url_for('settings') }}">
+    <form method="POST" action="{{ url_for('settings') }}" id="credentialsForm">
         <div>
             <label for="client_id">Twitch Client ID:</label>
-            <input type="text" id="client_id" name="client_id" placeholder="Enter Client ID">
+            <input type="text" id="client_id" name="client_id" placeholder="Enter Client ID" maxlength="30">
+            <span id="client_id_error" class="error-message hidden">Client ID is required.</span>
+            <span id="client_id_invalid" class="error-message hidden">Invalid Client ID: must be exactly 30 characters, letters and numbers only.</span>
         </div>
         <div>
             <label for="client_secret">Twitch Client Secret:</label>
-            <input type="text" id="client_secret" name="client_secret" placeholder="Enter Client Secret">
+            <input type="text" id="client_secret" name="client_secret" placeholder="Enter Client Secret" maxlength="30">
+            <span id="client_secret_error" class="error-message hidden">Client Secret is required.</span>
+            <span id="client_secret_invalid" class="error-message hidden">Invalid Client Secret: must be exactly 30 characters, letters and numbers only.</span>
         </div>
         <div>
             <button type="submit">Save Changes</button>
@@ -83,6 +83,78 @@
             }
             console.log("Secret:", '{{ client_secret }}');
         }
+        
+        // Function to validate credentials
+        function validateCredentials(input, errorField, invalidField) {
+            const value = input.value.trim();
+            const valid = /^[a-zA-Z0-9]{30}$/.test(value);
+
+            if (!valid) {
+                input.classList.add('error');
+                errorField.classList.add('hidden');
+                invalidField.classList.remove('hidden');
+            } else {
+                input.classList.remove('error');
+                invalidField.classList.add('hidden');
+            }
+        }
+
+        // Function to handle input event
+        function handleInput(event) {
+            const input = event.target;
+            const errorField = document.getElementById(input.id + '_error');
+            const invalidField = document.getElementById(input.id + '_invalid');
+            validateCredentials(input, errorField, invalidField);
+        }
+
+        // Validate form inputs and show errors if any
+        function validateForm(event) {
+            event.preventDefault();
+            var clientIdInput = document.getElementById('client_id');
+            var clientSecretInput = document.getElementById('client_secret');
+            var clientIdError = document.getElementById('client_id_error');
+            var clientSecretError = document.getElementById('client_secret_error');
+            var clientIdInvalid = document.getElementById('client_id_invalid');
+            var clientSecretInvalid = document.getElementById('client_secret_invalid');
+            var valid = true;
+
+            if (clientIdInput.value.trim() === '') {
+                clientIdInput.classList.add('error');
+                clientIdError.classList.remove('hidden');
+                clientIdInvalid.classList.add('hidden');
+                valid = false;
+            } else {
+                clientIdError.classList.add('hidden');
+                validateCredentials(clientIdInput, clientIdError, clientIdInvalid);
+                if (clientIdInvalid.classList.contains('hidden') === false) {
+                    valid = false;
+                }
+            }
+
+            if (clientSecretInput.value.trim() === '') {
+                clientSecretInput.classList.add('error');
+                clientSecretError.classList.remove('hidden');
+                clientSecretInvalid.classList.add('hidden');
+                valid = false;
+            } else {
+                clientSecretError.classList.add('hidden');
+                validateCredentials(clientSecretInput, clientSecretError, clientSecretInvalid);
+                if (clientSecretInvalid.classList.contains('hidden') === false) {
+                    valid = false;
+                }
+            }
+
+            if (valid) {
+                document.getElementById('credentialsForm').submit();
+            }
+        }
+
+        // Add event listener to form submission
+        document.getElementById('credentialsForm').addEventListener('submit', validateForm);
+
+        // Add input event listeners for real-time validation
+        document.getElementById('client_id').addEventListener('input', handleInput);
+        document.getElementById('client_secret').addEventListener('input', handleInput);
 
         // Fetch credentials when the page loads
         document.addEventListener('DOMContentLoaded', () => {

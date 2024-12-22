@@ -20,3 +20,14 @@ nav ul li a {
     text-decoration: none;
     color: #007bff;
 }
+
+.hidden {
+    display: none;
+}
+.error {
+    border: 1px solid red;
+}
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
