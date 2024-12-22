@@ -1,2 +1,4 @@
 flask
 streamlink
+cryptography
+python-dotenv

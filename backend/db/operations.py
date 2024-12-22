@@ -14,6 +14,7 @@ def init_db():
                           record_length INTEGER,
                           favorited INTEGER DEFAULT 0)''')
         conn.commit()
+
 def get_favorited_channels():
     try:
         with sqlite3.connect(DATABASE) as conn:

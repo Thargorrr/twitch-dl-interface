@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/styles.css">
     <title>Settings</title>
 </head>
 <body>
-    <h1>Settings Page</h1>
-    <form>
-        <!-- Add settings fields here -->
-        <button type="submit">Save Settings</button>
+    <h1>Settings</h1>
+    <form method="post" action="/settings">
+        <label for="client_id">Twitch Client ID:</label>
+        <input type="text" id="client_id" name="client_id" value="{{ client_id }}" required>
+        <br>
+        <label for="client_secret">Twitch Client Secret:</label>
+        <input type="text" id="client_secret" name="client_secret" value="{{ client_secret }}" required>
+        <br>
+        <button type="submit">Save Changes</button>
     </form>
 </body>
 </html>
