@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <h1>Search Channels</h1>
@@ -15,9 +17,29 @@
     {% if channels %}
         <ul>
             {% for channel in channels %}
-                <li>
-                    <img src="{{ channel.thumbnail_url }}" alt="{{ channel.display_name }}">
-                    <strong>{{ channel.display_name }}</strong> - {{ channel.title }}
+                <li class="channel-info">
+                    <div class="channel-details">
+                        <a href="https://www.twitch.tv/{{ channel.display_name }}" target="_blank" class="channel-link">
+                            <img src="{{ channel.profile_image_url }}" alt="{{ channel.display_name }}">
+                            <span>{{ channel.display_name }}</span>
+                            <span class="live-indicator {% if channel.is_live %}live{% else %}offline{% endif %}"></span>
+                        </a>
+                        <p>Follower Count: {{ channel.follower_count }}</p>
+                        <p>{{ channel.description }}</p>
+                        {% if not channel.is_live %}
+                            <p>{{ channel.last_live }}</p>
+                        {% endif %}
+                    </div>
+                    {% if channel.is_live %}
+                        <div class="stream-details">
+                            <a href="https://www.twitch.tv/{{ channel.display_name }}" target="_blank" class="stream-link">
+                                <img src="{{ channel.thumbnail_url }}" alt="{{ channel.stream_title }}" class="stream-thumbnail">
+                                <p>Stream Title: {{ channel.stream_title }}</p>
+                                <p>Viewer Count: {{ channel.viewer_count }}</p>
+                                <p>Stream Duration: {{ channel.stream_duration }}</p>
+                            </a>
+                        </div>
+                    {% endif %}
                     <form method="post" action="/favorites/add">
                         <input type="hidden" name="channel_id" value="{{ channel.id }}">
                         <input type="hidden" name="channel_name" value="{{ channel.display_name }}">

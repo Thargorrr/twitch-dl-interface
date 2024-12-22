@@ -5,22 +5,18 @@ body {
     padding: 0;
     background-color: #f8f9fa;
 }
-
 nav ul {
     list-style-type: none;
     padding: 0;
 }
-
 nav ul li {
     display: inline;
     margin-right: 10px;
 }
-
 nav ul li a {
     text-decoration: none;
     color: #007bff;
 }
-
 .hidden {
     display: none;
 }
@@ -30,4 +26,37 @@ nav ul li a {
 .error-message {
     color: red;
     font-size: 0.9em;
+}
+.channel-info {
+    display: flex;
+    margin-bottom: 20px;
+}
+.channel-info img {
+    margin-right: 10px;
+}
+.channel-info .live-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 5px;
+}
+.live-indicator.live {
+    background-color: red;
+}
+.live-indicator.offline {
+    background-color: gray;
+}
+.channel-details, .stream-details {
+    flex: 1;
+}
+.stream-thumbnail {
+    width: 320px;
+    height: 180px;
+    object-fit: cover;
+}
+.channel-link, .stream-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
 }

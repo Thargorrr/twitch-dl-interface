@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask_caching import Cache
 from dotenv import set_key, load_dotenv
 from backend.db.operations import *
 from backend.twitch_api import get_twitch_access_token, search_twitch_channels
@@ -8,9 +9,10 @@ from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize, ge
 initialize()
 
 app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/css')
-load_dotenv()
+load_dotenv(ENV_PATH, override=True)
 print(f"SECRET_KEY from app.py: {os.getenv('SECRET_KEY')}")
 app.secret_key = os.getenv('SECRET_KEY')
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 @app.route('/')
 def main():
@@ -20,8 +22,15 @@ def main():
 def search():
     if request.method == 'POST':
         query = request.form['query']
+        # Check if we have cached results
+        cached_channels = cache.get(query)
+        if cached_channels:
+            return render_template('search.html', channels=cached_channels)
+        
         access_token = get_twitch_access_token()
         channels = search_twitch_channels(query, access_token)
+        # Cache the results for 10 minutes
+        cache.set(query, channels, timeout=10 * 60)
         return render_template('search.html', channels=channels)
     return render_template('search.html', channels=[])
 

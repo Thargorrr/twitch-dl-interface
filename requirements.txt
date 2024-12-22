@@ -2,3 +2,5 @@ flask
 streamlink
 cryptography
 python-dotenv
+Flask-Caching
+requests_cache
