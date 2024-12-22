@@ -1,13 +1,9 @@
 <!-- frontend/templates/search.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Search</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
     <h1>Search Channels</h1>
     <form method="get" action="/search">
         <input type="text" name="query" placeholder="Enter channel name, URL or keywords" value="{{ query or '' }}">
@@ -52,8 +48,4 @@
     {% else %}
         <p>No channels found.</p>
     {% endif %}
-    <script>
-        
-    </script>
-</body>
-</html>
+{% endblock %}

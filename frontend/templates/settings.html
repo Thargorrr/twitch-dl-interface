@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
+<!-- frontend/templates/settings.html -->
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
     <h1>Twitch Credentials</h1>
 
     <!-- Display existing credentials if available -->
@@ -164,5 +161,4 @@
             });
         });
     </script>
-</body>
-</html>
+{% endblock %}

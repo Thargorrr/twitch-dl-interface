@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
-    <title>Favorites</title>
-</head>
-<body>
+<!-- frontend/templates/favorites.html -->
+{% extends "base.html" %}
+
+{% block title %}Favorites{% endblock %}
+
+{% block content %}
     <h1>Favorites Page</h1>
     <div id="favorites-list">
         <!-- Add favorite channels here -->
@@ -20,5 +17,4 @@
             </div>
         {% endfor %}
     </div>
-</body>
-</html>
+{% endblock %}
