@@ -11,12 +11,14 @@ def init_db():
         cursor.execute('''CREATE TABLE IF NOT EXISTS channels (
                           id INTEGER PRIMARY KEY AUTOINCREMENT,
                           name TEXT NOT NULL,
-                          url TEXT NOT NULL,
+                          image_url TEXT NOT NULL,
+                          info TEXT,
                           quality TEXT NOT NULL,
                           save_duration TEXT NOT NULL,
-                          record_length INTEGER
-                          )''')
+                          record_length INTEGER,
+                          favorited INTEGER DEFAULT 0)''')
         conn.commit()
+
 
 if __name__ == '__main__':
     init_db()

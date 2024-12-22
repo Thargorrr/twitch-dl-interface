@@ -2,10 +2,18 @@ import sqlite3
 from config.settings import DATABASE
 
 def get_favorited_channels():
-    with sqlite3.connect(DATABASE) as conn:
-        cursor = conn.cursor()
-        cursor.execute('SELECT id, name, image_url, info FROM channels WHERE favorited = 1')
-        return cursor.fetchall()
+    try:
+        with sqlite3.connect(DATABASE) as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT id, name, image_url, info FROM channels WHERE favorited = 1')
+            return cursor.fetchall()
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+        return []
+    except Exception as e:
+        print(f"General error: {e}")
+        return []
+
 
 def get_channel(channel_id):
     with sqlite3.connect(DATABASE) as conn:
