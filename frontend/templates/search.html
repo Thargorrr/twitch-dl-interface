@@ -9,8 +9,8 @@
 </head>
 <body>
     <h1>Search Channels</h1>
-    <form method="post" action="/search">
-        <input type="text" name="query" placeholder="Enter channel name, URL or keywords">
+    <form method="get" action="/search">
+        <input type="text" name="query" placeholder="Enter channel name, URL or keywords" value="{{ query or '' }}">
         <button type="submit">Search</button>
     </form>
     <h2>Search Results</h2>
@@ -52,5 +52,8 @@
     {% else %}
         <p>No channels found.</p>
     {% endif %}
+    <script>
+        
+    </script>
 </body>
 </html>
