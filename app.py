@@ -1,6 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+from backend.db.operations import get_favorited_channels, get_channel, update_channel_config, search_channels
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/css')
 
 @app.route('/')
 def main():
@@ -37,4 +38,4 @@ def settings():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
