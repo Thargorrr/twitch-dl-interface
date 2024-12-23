@@ -45,7 +45,7 @@ def favorites():
         channel_name = request.form['channel_name']
         channel_image_url = request.form['channel_image_url']
         add_favorited_channel(channel_id, channel_name, channel_image_url)
-        return redirect(url_for('favorites'))
+        # return redirect(url_for('favorites'))
     channels = get_favorited_channels()
     return render_template('favorites.html', channels=channels)
 

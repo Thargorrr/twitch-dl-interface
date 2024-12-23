@@ -60,7 +60,7 @@ def update_channel_config(channel_id, form):
 def search_channels(query):
     with sqlite3.connect(DATABASE) as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT id, name, url FROM channels WHERE name LIKE ?', ('%' + query + '%',))
+        cursor.execute('SELECT id, name, url FROM channels WHERE name LIKE ? LIMIT 10', ('%' + query + '%',))
         return cursor.fetchall()
 
 # Ensure the database and tables are created

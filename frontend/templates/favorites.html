@@ -13,8 +13,14 @@
                 <h2>{{ channel.name }}</h2>
                 <p>{{ channel.info }}</p>
                 <a href="/channel/{{ channel.id }}/config">Configure</a>
-                <button onclick="unfavorite('{{ channel.id }}')">Unfavorite</button>
+                <button onclick="unfavoriteChannel('{{ channel.id }}')">Unfavorite</button>
             </div>
         {% endfor %}
     </div>
+    <!-- <script>
+        function unfavoriteChannel(channelId) {
+            fetch(`/unfavorite/${channelId}`, { method: 'POST' })  // Assuming you have an endpoint to handle unfavoriting
+                .then(() => location.reload());  // Reload the page after successfully un-favoriting a channel
+        }
+    </script> -->
 {% endblock %}
