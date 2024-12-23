@@ -6,18 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TwitchDL Interface{% endblock %}</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-        }
-    </style>
 </head>
-<body>
+<body class="{{ 'home-page' if request.endpoint == 'main' else '' }}">
     <div class="container">
         <header>
-            <nav>
-                <ul>
+            <nav class="navbar">
+                <button id="back-button" class="back-button">←</button>
+                <ul class="nav-items">
                     <li><a href="{{ url_for('main') }}">Home</a></li>
                     <li><a href="{{ url_for('search') }}">Search</a></li>
                     <li><a href="{{ url_for('favorites') }}">Favorites</a></li>
@@ -25,8 +20,6 @@
                 </ul>
             </nav>
         </header>
-
-        <button onclick="history.back()" class="back-button">Back</button>
 
         <main>
             {% block content %}{% endblock %}
@@ -37,10 +30,24 @@
         </footer>
 
         <script>
-            // JavaScript for back button
-            document.querySelector('.back-button').addEventListener('click', function() {
-                window.history.back();
+            document.addEventListener('DOMContentLoaded', function() {
+            const backButton = document.getElementById('back-button');
+            
+            // Hide the back button on the home page
+            if (window.location.pathname === '/') {
+                backButton.style.display = 'none';
+            } else {
+                backButton.style.display = 'inline-block';
+            }
+
+            backButton.addEventListener('click', function() {
+                if (document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '/';
+                }
             });
+        });
         </script>
     </div>
 </body>
