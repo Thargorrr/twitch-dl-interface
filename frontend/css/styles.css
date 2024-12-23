@@ -1,12 +1,58 @@
 /* twitch-dl-interface/frontend/css/styles.css */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #343a40;
+    --tile-background-color: #495057;
+    --text-color: #f8f9fa;
+    --accent-color: #17a2b8;
+    --error-color: #dc3545;
+    --success-color: #28a745;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #121212; /* Dark background */
-    color: #e0e0e0; /* Light text color for contrast */
+    background-color: var(--background-color); /* Dark background */
+    color: var(--text-color); /* Light text color for contrast */
     line-height: 1.6;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-color);
+}
+
+button {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--accent-color);
+}
+
+input[type="text"], input[type="password"], textarea {
+    background-color: var(--background-color);
+    border: 1px solid var(--secondary-color);
+    color: var(--text-color);
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
 header {
     background-color: #1f1f1f;
     padding: 1em;
@@ -54,11 +100,11 @@ footer {
     background-color: #0056b3;
 }
 a {
-    color: #00bfff; /* Light blue for links */
+    color: var(--primary-color); /* Light blue for links */
     text-decoration: none;
 }
 a:hover {
-    color: #0099cc; /* Slightly darker blue on hover */
+    color: var(--accent-color); /* Slightly darker blue on hover */
 }
 /* Navigation */
 nav ul {
@@ -146,13 +192,62 @@ nav ul li a:hover {
     border: 1px solid #f44336;
 }
 .error-message {
-    color: #f44336; /* Red color for errors */
+    color: var(--error-color);
+    font-size: 0.9em;
+}
+
+.success-message {
+    color: var(--success-color);
     font-size: 0.9em;
 }
 .channel-link, .stream-link {
     display: block;
     color: inherit;
     text-decoration: none;
+}
+
+/* Settings Tile Styling */
+.settings-tile {
+    background-color: var(--tile-background-color);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.setting-item label {
+    flex: 1;
+}
+
+.setting-item input, .setting-item span, .setting-item button {
+    flex: 2;
+    margin-left: 10px;
+}
+
+.apply-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.apply-button {
+    background-color: var(--success-color);
+    border: none;
+    color: var(--text-color);
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.apply-button:hover {
+    background-color: var(--accent-color);
 }
 
 /* Dark Mode Specific */

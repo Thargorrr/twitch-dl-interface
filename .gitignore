@@ -1,2 +1,4 @@
 .env
 database.db
+twitch_cache.sqlite
+.pyc

@@ -14,32 +14,34 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('main') }}">Home</a></li>
-                <li><a href="{{ url_for('search') }}">Search</a></li>
-                <li><a href="{{ url_for('favorites') }}">Favorites</a></li>
-                <li><a href="{{ url_for('settings') }}">Settings</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('main') }}">Home</a></li>
+                    <li><a href="{{ url_for('search') }}">Search</a></li>
+                    <li><a href="{{ url_for('favorites') }}">Favorites</a></li>
+                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                </ul>
+            </nav>
+        </header>
 
-    <button onclick="history.back()" class="back-button">Back</button>
+        <button onclick="history.back()" class="back-button">Back</button>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
     
-    <footer>
-        <p>&copy; 2024 TwitchDL Interface. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>&copy; 2024 TwitchDL Interface. All rights reserved.</p>
+        </footer>
 
-    <script>
-        // JavaScript for back button
-        document.querySelector('.back-button').addEventListener('click', function() {
-            window.history.back();
-        });
-    </script>
+        <script>
+            // JavaScript for back button
+            document.querySelector('.back-button').addEventListener('click', function() {
+                window.history.back();
+            });
+        </script>
+    </div>
 </body>
 </html>

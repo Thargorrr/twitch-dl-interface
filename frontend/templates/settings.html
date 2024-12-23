@@ -4,43 +4,36 @@
 {% block title %}Settings{% endblock %}
 
 {% block content %}
-    <h1>Twitch Credentials</h1>
-
-    <!-- Display existing credentials if available -->
-    {% if client_id %}
-        <div>
-            <label for="client_id">Client ID:</label>
-            <span id="client_id_display">{{ censored_client_id or '****' }}</span>
-            <button type="button" onclick="toggleClientId()">Show</button>
-        </div>
-        <div>
-            <label for="client_secret">Client Secret:</label>
-            <span id="client_secret_display">{{ censored_client_secret or '****' }}</span>
-            <button type="button" onclick="toggleClientSecret()">Show</button>
-        </div>
-    {% else %}
-        <p>No credentials saved. Please enter your credentials below:</p>
-    {% endif %}
-
-    <!-- Input fields to enter new credentials if needed -->
+<h1>Settings</h1>
+<!-- Display existing credentials if available -->
+<div class="settings-tile">
+    <h2>Twitch Credentials</h2>
     <form method="POST" action="{{ url_for('settings') }}" id="credentialsForm">
-        <div>
-            <label for="client_id">Twitch Client ID:</label>
+        <div class="setting-item">
+            <label for="client_id">Client ID:</label>
+            {% if client_id %}
+                <span id="client_id_display">{{ censored_client_id or '****' }}</span>
+                <button type="button" onclick="toggleVisibilityId('client_id')">Show</button>
+            {% endif %}
             <input type="text" id="client_id" name="client_id" placeholder="Enter Client ID" maxlength="30">
             <span id="client_id_error" class="error-message hidden">Client ID is required.</span>
             <span id="client_id_invalid" class="error-message hidden">Invalid Client ID: must be exactly 30 characters, letters and numbers only.</span>
         </div>
-        <div>
-            <label for="client_secret">Twitch Client Secret:</label>
+        <div class="setting-item">
+            <label for="client_secret">Client Secret:</label>
+            {% if client_secret %}
+                <span id="client_secret_display">{{ censored_client_secret or '****' }}</span>
+                <button type="button" onclick="toggleVisibilitySecret('client_secret')">Show</button>
+            {% endif %}
             <input type="text" id="client_secret" name="client_secret" placeholder="Enter Client Secret" maxlength="30">
             <span id="client_secret_error" class="error-message hidden">Client Secret is required.</span>
             <span id="client_secret_invalid" class="error-message hidden">Invalid Client Secret: must be exactly 30 characters, letters and numbers only.</span>
         </div>
-        <div>
-            <button type="submit">Save Changes</button>
+        <div class="apply-button-container">
+            <button type="submit" class="apply-button">Save Changes</button>
         </div>
     </form>
-
+</div>
     <script>
         // Function to fetch the credentials from the server
         function fetchCredentials() {
@@ -52,7 +45,7 @@
                 .catch(error => console.error('Error fetching credentials:', error));
         }
         // Functions to toggle the visibility of the credentials
-        function toggleClientId() {
+        function toggleVisibilityId() {
             var clientIdDisplay = document.getElementById("client_id_display");
             var currentText = clientIdDisplay.innerHTML;
             console.log("Current text:", currentText);
@@ -66,7 +59,7 @@
             }
             console.log("ID:", '{{ client_id }}');
         }
-        function toggleClientSecret() {
+        function toggleVisibilitySecret() {
             var clientSecretDisplay = document.getElementById("client_secret_display");
             var currentText = clientSecretDisplay.innerHTML;
             console.log("Current text:", currentText);
@@ -146,12 +139,10 @@
             }
         }
 
-        // Add event listener to form submission
-        document.getElementById('credentialsForm').addEventListener('submit', validateForm);
-
-        // Add input event listeners for real-time validation
+        // Add input event listeners for real-time validation and submission
         document.getElementById('client_id').addEventListener('input', handleInput);
         document.getElementById('client_secret').addEventListener('input', handleInput);
+        document.getElementById('credentialsForm').addEventListener('submit', validateForm);
 
         // Fetch credentials when the page loads
         document.addEventListener('DOMContentLoaded', () => {
