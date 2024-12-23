@@ -4,7 +4,6 @@ from flask_caching import Cache
 from dotenv import set_key, load_dotenv
 from backend.db.operations import *
 from backend.twitch_api import get_twitch_access_token, search_twitch_channels
-from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize
 
 initialize()
 

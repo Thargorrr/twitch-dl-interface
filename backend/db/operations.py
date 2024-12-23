@@ -1,5 +1,16 @@
 import sqlite3
-from config.settings import DATABASE
+import os
+from cryptography.fernet import Fernet
+from dotenv import load_dotenv
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, 'database.db')
+ENV_PATH = os.path.join(BASE_DIR, '..', '.env')
+
+def initialize():
+    if not os.path.exists(ENV_PATH):
+        with open(ENV_PATH, 'w') as f:
+            f.write('')  # Create an empty .env file
 
 def init_db():
     with sqlite3.connect(DATABASE) as conn:
@@ -36,6 +47,26 @@ def search_channels(query):
         cursor = conn.cursor()
         cursor.execute('SELECT id, name, url FROM channels WHERE name LIKE ? LIMIT 10', ('%' + query + '%',))
         return cursor.fetchall()
+
+def encrypt_data(data):
+    """Encrypt the data."""
+    # Generate SECRET_KEY if it doesn't exist
+    load_dotenv(ENV_PATH, override=True)
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    if not SECRET_KEY:
+        SECRET_KEY = Fernet.generate_key().decode()
+        with open(ENV_PATH, 'a') as f:
+            f.write(f'\nSECRET_KEY={SECRET_KEY}')
+    cipher = Fernet(SECRET_KEY.encode())
+    return cipher.encrypt(data.encode()).decode()
+
+def decrypt_data(data):
+    """Decrypt the data."""
+    # Generate SECRET_KEY if it doesn't exist
+    load_dotenv(ENV_PATH, override=True)
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    cipher = Fernet(SECRET_KEY.encode())
+    return cipher.decrypt(data.encode()).decode()
 
 # Ensure the database and tables are created
 init_db()

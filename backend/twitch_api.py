@@ -3,8 +3,8 @@ import os
 import requests
 import requests_cache
 from dotenv import load_dotenv
-from datetime import datetime
-from config.settings import decrypt_data, ENV_PATH
+from datetime import datetime 
+from backend.db.operations import ENV_PATH, decrypt_data
 
 # Set up requests cache
 requests_cache.install_cache('twitch_cache', expire_after=600)  # Cache for 5 minutes
