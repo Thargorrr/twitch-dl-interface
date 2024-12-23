@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TwitchDL Interface{% endblock %}</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/scripts.js" defer></script>
 </head>
 <body class="{{ 'home-page' if request.endpoint == 'main' else '' }}">
     <div class="container">

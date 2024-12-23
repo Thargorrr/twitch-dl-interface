@@ -4,13 +4,12 @@ from flask_caching import Cache
 from dotenv import set_key, load_dotenv
 from backend.db.operations import *
 from backend.twitch_api import get_twitch_access_token, search_twitch_channels
-from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize, get_database_path
+from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize
 
 initialize()
 
-app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/css')
+app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/static')
 load_dotenv(ENV_PATH, override=True)
-print(f"SECRET_KEY from app.py: {os.getenv('SECRET_KEY')}")
 app.secret_key = os.getenv('SECRET_KEY')
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
@@ -37,26 +36,9 @@ def search():
     
     return render_template('search.html', channels=[], query=query)
 
-
-@app.route('/favorites', methods=['GET', 'POST'])
+@app.route('/favorites')
 def favorites():
-    if request.method == 'POST':
-        channel_id = request.form['channel_id']
-        channel_name = request.form['channel_name']
-        channel_image_url = request.form['channel_image_url']
-        add_favorited_channel(channel_id, channel_name, channel_image_url)
-        # return redirect(url_for('favorites'))
-    channels = get_favorited_channels()
-    return render_template('favorites.html', channels=channels)
-
-@app.route('/channel/<int:channel_id>/config', methods=['GET', 'POST'])
-def config(channel_id):
-    if request.method == 'POST':
-        # Update channel configuration in the database
-        update_channel_config(channel_id, request.form)
-        return redirect('/favorites')
-    channel = get_channel(channel_id)
-    return render_template('config.html', channel=channel)
+    return render_template('favorites.html')
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
@@ -122,6 +104,16 @@ def get_credentials():
         'client_id': decrypted_client_id,
         'client_secret': decrypted_client_secret
     })
+
+@app.route('/channel/<int:channel_id>/config', methods=['GET', 'POST'])
+def config(channel_id):
+    if request.method == 'POST':
+        # Update channel configuration in the database
+        update_channel_config(channel_id, request.form)
+        return redirect('/favorites')
+    channel = get_channel(channel_id)
+    return render_template('config.html', channel=channel)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
