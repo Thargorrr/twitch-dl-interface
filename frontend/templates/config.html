@@ -1,13 +1,9 @@
 <!-- frontend/templates/config.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
-    <title>Configure Channel</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
     <h1>Configure Channel: {{ channel.name }}</h1>
     <form method="post">
         <label for="recording">Recording Stream:</label>
@@ -30,5 +26,4 @@
         <input type="number" name="record_length" value="{{ channel.record_length }}"><br>
         <button type="submit">Save Configuration</button>
     </form>
-</body>
-</html>
+{% endblock %}

@@ -3,14 +3,13 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from flask_caching import Cache
 from dotenv import set_key, load_dotenv
 from backend.db.operations import *
+from backend.initialization import initialize, decrypt_data, encrypt_data
 from backend.twitch_api import get_twitch_access_token, search_twitch_channels
-from config.settings import encrypt_data, decrypt_data, ENV_PATH, initialize, get_database_path
 
 initialize()
 
-app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/css')
+app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/static')
 load_dotenv(ENV_PATH, override=True)
-print(f"SECRET_KEY from app.py: {os.getenv('SECRET_KEY')}")
 app.secret_key = os.getenv('SECRET_KEY')
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
@@ -22,41 +21,22 @@ def main():
 def search():
     # Retrieve query from URL if it's a GET request, otherwise from the form
     query = request.args.get('query') if request.method == 'GET' else request.form['query']
-    
+
     if query:
-        # Check if we have cached results
-        cached_channels = cache.get(query)
-        if cached_channels:
+        if cached_channels := cache.get(query):
             return render_template('search.html', channels=cached_channels, query=query)
-        
+
         access_token = get_twitch_access_token()
         channels = search_twitch_channels(query, access_token)
         # Cache the results for 10 minutes
         cache.set(query, channels, timeout=10 * 60)
         return render_template('search.html', channels=channels, query=query)
-    
+
     return render_template('search.html', channels=[], query=query)
 
-
-@app.route('/favorites', methods=['GET', 'POST'])
+@app.route('/favorites')
 def favorites():
-    if request.method == 'POST':
-        channel_id = request.form['channel_id']
-        channel_name = request.form['channel_name']
-        channel_image_url = request.form['channel_image_url']
-        add_favorited_channel(channel_id, channel_name, channel_image_url)
-        # return redirect(url_for('favorites'))
-    channels = get_favorited_channels()
-    return render_template('favorites.html', channels=channels)
-
-@app.route('/channel/<int:channel_id>/config', methods=['GET', 'POST'])
-def config(channel_id):
-    if request.method == 'POST':
-        # Update channel configuration in the database
-        update_channel_config(channel_id, request.form)
-        return redirect('/favorites')
-    channel = get_channel(channel_id)
-    return render_template('config.html', channel=channel)
+    return render_template('favorites.html')
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
@@ -122,6 +102,16 @@ def get_credentials():
         'client_id': decrypted_client_id,
         'client_secret': decrypted_client_secret
     })
+
+@app.route('/channel/<int:channel_id>/config', methods=['GET', 'POST'])
+def config(channel_id):
+    if request.method == 'POST':
+        # Update channel configuration in the database
+        update_channel_config(channel_id, request.form)
+        return redirect('/favorites')
+    channel = get_channel(channel_id)
+    return render_template('config.html', channel=channel)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

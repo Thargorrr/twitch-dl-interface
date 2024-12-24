@@ -3,11 +3,12 @@ import os
 import requests
 import requests_cache
 from dotenv import load_dotenv
-from datetime import datetime
-from config.settings import decrypt_data, ENV_PATH
+from datetime import datetime 
+from backend.db.operations import ENV_PATH
+from backend.initialization import decrypt_data
 
 # Set up requests cache
-requests_cache.install_cache('twitch_cache', expire_after=300)  # Cache for 5 minutes
+requests_cache.install_cache('twitch_cache', expire_after=600)  # Cache for 5 minutes
 
 def get_twitch_access_token():
     load_dotenv(ENV_PATH, override=True)
@@ -25,9 +26,6 @@ def get_twitch_access_token():
     else:
         raise Exception('Failed to get access token from Twitch.')
 
-import requests
-import os
-
 def search_twitch_channels(query, access_token):
     url = f'https://api.twitch.tv/helix/search/channels?query={query}'
     headers = {
@@ -42,7 +40,6 @@ def search_twitch_channels(query, access_token):
 
     for channel in channels:
         channel_id = channel['id']
-        
         # Fetch additional channel information (including description)
         channel_info_url = f'https://api.twitch.tv/helix/users?id={channel_id}'
         channel_info_response = requests.get(channel_info_url, headers=headers)

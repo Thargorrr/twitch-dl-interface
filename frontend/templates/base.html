@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TwitchDL Interface{% endblock %}</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/scripts.js" defer></script>
 </head>
 <body class="{{ 'home-page' if request.endpoint == 'main' else '' }}">
     <div class="container">
@@ -20,10 +21,32 @@
                 </ul>
             </nav>
         </header>
-
-        <main>
-            {% block content %}{% endblock %}
-        </main>
+        <div class="container">
+            <div class="sidebar">
+                <h2>Favorited Channels</h2>
+                <ul id="favorited-channels">
+                    <!-- Example channel list item -->
+                    <li class="sb-channel-list-item">
+                        <div class="sb-channel-info">
+                            <img src="https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png" alt="Channel Picture">
+                            <div class="sb-channel-details">
+                                <h3>Channel Name</h3>
+                                <p>Viewer Count: 100</p>
+                            </div>
+                            <div class="sb-live-indicator live"></div>
+                            <div class="channel-actions">
+                                <button class="unfavorite-button">Unfavorite</button>
+                                <button class="configure-button">Configure</button>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- End of example channel list item -->
+                </ul>
+            </div>
+            <div class="main-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
     
         <footer>
             <p>&copy; 2024 TwitchDL Interface. All rights reserved.</p>
@@ -46,6 +69,23 @@
                 } else {
                     window.location.href = '/';
                 }
+            });
+        });
+        // Add event listener to unfavorite button
+        const unfavoriteButtons = document.querySelectorAll('.unfavorite-button');
+        unfavoriteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Call a function to unfavorite the channel
+                // This function will be implemented later
+            });
+        });
+
+        // Add event listener to configure button
+        const configureButtons = document.querySelectorAll('.configure-button');
+        configureButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Call a function to configure the channel settings
+                // This function will be implemented later
             });
         });
         </script>
