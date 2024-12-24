@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from flask_caching import Cache
 from dotenv import set_key, load_dotenv
 from backend.db.operations import *
+from backend.initialization import initialize, decrypt_data, encrypt_data
 from backend.twitch_api import get_twitch_access_token, search_twitch_channels
 
 initialize()
@@ -20,19 +21,17 @@ def main():
 def search():
     # Retrieve query from URL if it's a GET request, otherwise from the form
     query = request.args.get('query') if request.method == 'GET' else request.form['query']
-    
+
     if query:
-        # Check if we have cached results
-        cached_channels = cache.get(query)
-        if cached_channels:
+        if cached_channels := cache.get(query):
             return render_template('search.html', channels=cached_channels, query=query)
-        
+
         access_token = get_twitch_access_token()
         channels = search_twitch_channels(query, access_token)
         # Cache the results for 10 minutes
         cache.set(query, channels, timeout=10 * 60)
         return render_template('search.html', channels=channels, query=query)
-    
+
     return render_template('search.html', channels=[], query=query)
 
 @app.route('/favorites')

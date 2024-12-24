@@ -22,35 +22,22 @@ function fetchCredentials() {
         })
         .catch(error => console.error('Error fetching credentials:', error));
 }
+
 // Functions to toggle the visibility of the credentials
-function toggleVisibilityId() {
-    var clientIdDisplay = document.getElementById("client_id_display");
-    var currentText = clientIdDisplay.innerHTML;
-    console.log("Current text:", currentText);
-    console.log("clientid:", clientIdDisplay);
-    if (currentText === '****') {
+function toggleVisibility(elementId) {
+    const display = document.getElementById(elementId);
+    if (display.innerHTML === '****') {
         fetchCredentials().then(data => {
-            clientIdDisplay.innerHTML = data.client_id;
+            display.innerHTML = data[elementId.replace('_display', '')];
         });
     } else {
-        clientIdDisplay.innerHTML = '****';
+        display.innerHTML = '****';
     }
-    console.log("ID:", '{{ client_id }}');
 }
-function toggleVisibilitySecret() {
-    var clientSecretDisplay = document.getElementById("client_secret_display");
-    var currentText = clientSecretDisplay.innerHTML;
-    console.log("Current text:", currentText);
-    console.log("clientscret:", clientSecretDisplay);
-    if (currentText === '****') {
-        fetchCredentials().then(data => {
-            clientSecretDisplay.innerHTML = data.client_secret;
-        });
-    } else {
-        clientSecretDisplay.innerHTML = '****';
-    }
-    console.log("Secret:", '{{ client_secret }}');
-}
+
+// Add click event listeners to the toggle buttons
+document.getElementById('toggle_id_btn').onclick = () => toggleVisibility('client_id_display');
+document.getElementById('toggle_secret_btn').onclick = () => toggleVisibility('client_secret_display');
 
 // Function to validate credentials
 function validateCredentials(input, errorField, invalidField) {
@@ -75,44 +62,30 @@ function handleInput(event) {
     validateCredentials(input, errorField, invalidField);
 }
 
-// Validate form inputs and show errors if any
 function validateForm(event) {
     event.preventDefault();
-    var clientIdInput = document.getElementById('client_id');
-    var clientSecretInput = document.getElementById('client_secret');
-    var clientIdError = document.getElementById('client_id_error');
-    var clientSecretError = document.getElementById('client_secret_error');
-    var clientIdInvalid = document.getElementById('client_id_invalid');
-    var clientSecretInvalid = document.getElementById('client_secret_invalid');
-    var valid = true;
+    const fields = ['client_id', 'client_secret'];
+    const valid = fields.every(field => {
+        const input = document.getElementById(field);
+        const error = document.getElementById(`${field}_error`);
+        const invalid = document.getElementById(`${field}_invalid`);
 
-    if (clientIdInput.value.trim() === '') {
-        clientIdInput.classList.add('error');
-        clientIdError.classList.remove('hidden');
-        clientIdInvalid.classList.add('hidden');
-        valid = false;
-    } else {
-        clientIdError.classList.add('hidden');
-        validateCredentials(clientIdInput, clientIdError, clientIdInvalid);
-        if (clientIdInvalid.classList.contains('hidden') === false) {
-            valid = false;
+        if (input.value.trim() === '') {
+            showError(input, error, invalid);
+            return false;
         }
-    }
 
-    if (clientSecretInput.value.trim() === '') {
-        clientSecretInput.classList.add('error');
-        clientSecretError.classList.remove('hidden');
-        clientSecretInvalid.classList.add('hidden');
-        valid = false;
-    } else {
-        clientSecretError.classList.add('hidden');
-        validateCredentials(clientSecretInput, clientSecretError, clientSecretInvalid);
-        if (clientSecretInvalid.classList.contains('hidden') === false) {
-            valid = false;
-        }
-    }
+        error.classList.add('hidden');
+        return validateCredentials(input, error, invalid);
+    });
 
     if (valid) {
         document.getElementById('credentialsForm').submit();
     }
+}
+
+function showError(input, error, invalid) {
+    input.classList.add('error');
+    error.classList.remove('hidden');
+    invalid.classList.add('hidden');
 }

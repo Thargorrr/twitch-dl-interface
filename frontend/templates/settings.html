@@ -13,7 +13,7 @@
             <label for="client_id">Client ID:</label>
             {% if client_id %}
                 <span id="client_id_display">{{ censored_client_id or '****' }}</span>
-                <button type="button" onclick="toggleVisibilityId('client_id')">Show</button>
+                <button type="button" id="toggle_id_btn">Show</button>
             {% endif %}
             <input type="text" id="client_id" name="client_id" placeholder="Enter Client ID" maxlength="30">
             <span id="client_id_error" class="error-message hidden">Client ID is required.</span>
@@ -23,7 +23,7 @@
             <label for="client_secret">Client Secret:</label>
             {% if client_secret %}
                 <span id="client_secret_display">{{ censored_client_secret or '****' }}</span>
-                <button type="button" onclick="toggleVisibilitySecret('client_secret')">Show</button>
+                <button type="button" id="toggle_secret_btn">Show</button>
             {% endif %}
             <input type="text" id="client_secret" name="client_secret" placeholder="Enter Client Secret" maxlength="30">
             <span id="client_secret_error" class="error-message hidden">Client Secret is required.</span>

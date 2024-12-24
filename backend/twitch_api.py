@@ -4,7 +4,8 @@ import requests
 import requests_cache
 from dotenv import load_dotenv
 from datetime import datetime 
-from backend.db.operations import ENV_PATH, decrypt_data
+from backend.db.operations import ENV_PATH
+from backend.initialization import decrypt_data
 
 # Set up requests cache
 requests_cache.install_cache('twitch_cache', expire_after=600)  # Cache for 5 minutes
@@ -24,9 +25,6 @@ def get_twitch_access_token():
         return response.json()['access_token']
     else:
         raise Exception('Failed to get access token from Twitch.')
-
-import requests
-import os
 
 def search_twitch_channels(query, access_token):
     url = f'https://api.twitch.tv/helix/search/channels?query={query}'
